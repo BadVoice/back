@@ -12,4 +12,53 @@ datasource db {
 
 model Company {
   id Int @id @default(autoincrement())
+  name String
+  channels Channel[]
 }
+
+model Channel {
+  id Int @id @default(autoincrement())
+  company_id Int @unique
+  company Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
+
+  channel_name String
+  app_name ChannelType
+
+  messages Message[]
+}
+
+enum ChannelType {
+  Telegram
+  Vkontakte
+  WhatsApp
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  text String?
+ 
+  channel Channel @relation(fields: [channel_id], references: [id])
+  channel_id Int 
+
+  buttons Button[]
+}
+
+model Button {
+  id Int  @id @default(autoincrement())
+  text String
+  type ButtonType
+  display ButtonDisplayType
+  message  Message? @relation(fields: [message_id], references: [id])
+  message_id Int?  
+}
+
+enum ButtonType {
+  LINK
+  TEXT
+}
+
+enum ButtonDisplayType {
+  INLINE
+  DEFAULT
+}
+
