@@ -18,13 +18,15 @@ model Company {
 
 model Channel {
   id Int @id @default(autoincrement())
-  company_id Int @unique
+  company_id Int
   company Company @relation(fields: [company_id], references: [id], onDelete: Cascade)
 
   channel_name String
   app_name ChannelType
 
   messages Message[]
+
+  @@unique([company_id, app_name])
 }
 
 enum ChannelType {
@@ -39,17 +41,27 @@ model Message {
  
   channel Channel @relation(fields: [channel_id], references: [id])
   channel_id Int 
+  keyboard Keyboard?
+}
+
+model Keyboard {
+  id Int @id @default(autoincrement())
+  type KeyboardType
 
   buttons Button[]
+
+  message_id Int @unique
+  message Message  @relation(fields: [message_id], references: [id])
 }
 
 model Button {
   id Int  @id @default(autoincrement())
-  text String
+  content String
+
   type ButtonType
-  display ButtonDisplayType
-  message  Message? @relation(fields: [message_id], references: [id])
-  message_id Int?  
+
+  keyboard  Keyboard? @relation(fields: [keyboard_id], references: [id])
+  keyboard_id Int?  
 }
 
 enum ButtonType {
@@ -57,7 +69,7 @@ enum ButtonType {
   TEXT
 }
 
-enum ButtonDisplayType {
+enum KeyboardType {
   INLINE
   DEFAULT
 }
