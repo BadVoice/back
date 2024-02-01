@@ -28,7 +28,11 @@ export class СhannelService {
   async findAll() {
     return await this.prisma.channel.findMany({
       include: {
-        messages: true,
+        messages: {
+          include: {
+            keyboard: true,
+          },
+        },
       },
     });
   }
@@ -38,7 +42,11 @@ export class СhannelService {
       .findUnique({
         where: { id },
         include: {
-          messages: true,
+          messages: {
+            include: {
+              keyboard: true,
+            },
+          },
         },
       })
       .then((r) => {
