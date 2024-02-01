@@ -61,14 +61,14 @@ export class CompanyService {
         },
       })
       .then((r) => {
-        if (!r) throw new NotFoundException('Message not found');
+        if (!r) throw new NotFoundException('Company not found');
         return r;
       });
   }
 
   async remove(id: number) {
     return await this.prisma.company.delete({ where: { id } }).then((r) => {
-      if (!r) throw new NotFoundException('Message not found');
+      if (!r) throw new NotFoundException('Company not found');
       return r;
     });
   }
