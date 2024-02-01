@@ -30,7 +30,11 @@ export class СhannelService {
       include: {
         messages: {
           include: {
-            keyboard: true,
+            keyboard: {
+              include: {
+                buttons: true,
+              },
+            },
           },
         },
       },
