@@ -13,7 +13,8 @@ export class CreateButtonDto {
   @IsString()
   @IsNotEmpty()
   type: ButtonType;
-  @IsNotEmpty()
+
   @IsNumber()
+  @IsNotEmpty()
   keyboard_id: number;
 }

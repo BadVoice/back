@@ -1,4 +1,12 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { CreateButtonDto } from 'src/button/dto/create-button.dto';
 
 enum KeyboardType {
   INLINE = 'INLINE',
@@ -14,4 +22,8 @@ export class CreateKeyboardDto {
   @IsNotEmpty()
   @IsNumber()
   message_id: number;
+
+  @ValidateNested({ each: true })
+  @Type(() => CreateButtonDto)
+  buttons: CreateButtonDto[];
 }

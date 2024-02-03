@@ -6,23 +6,35 @@ import {
 import { CreateСhannelDto } from './dto/create-сhannel.dto';
 import { UpdateСhannelDto } from './dto/update-сhannel.dto';
 import { DatabaseService } from 'src/database/database.service';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class СhannelService {
   constructor(private readonly prisma: DatabaseService) {}
   async create(dto: CreateСhannelDto) {
-    return await this.prisma.channel.create({
-      data: {
-        channel_name: dto.channel_name,
-        app_name: dto.app_name,
-        company: {
-          connect: { id: dto.company_id },
+    return await this.prisma.channel
+      .create({
+        data: {
+          channel_name: dto.channel_name,
+          app_name: dto.app_name,
+          company: {
+            connect: { id: dto.company_id },
+          },
         },
-      },
-      include: {
-        messages: true,
-      },
-    });
+        include: {
+          messages: true,
+        },
+      })
+      .catch((error) => {
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+          if (error.code === 'P2002') {
+            throw new BadRequestException(
+              'Channel with this app_name already exists',
+            );
+          }
+        }
+        return error;
+      });
   }
 
   async findAll() {
@@ -57,6 +69,25 @@ export class СhannelService {
         if (!r) throw new NotFoundException('Channel not found');
         return r;
       });
+  }
+
+  async findAllByCompanyId(companyId: number) {
+    return this.prisma.channel.findMany({
+      where: {
+        company_id: companyId,
+      },
+      include: {
+        messages: {
+          include: {
+            keyboard: {
+              include: {
+                buttons: true,
+              },
+            },
+          },
+        },
+      },
+    });
   }
 
   async update(id: number, dto: UpdateСhannelDto) {

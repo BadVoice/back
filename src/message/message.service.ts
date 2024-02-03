@@ -11,13 +11,39 @@ import { DatabaseService } from 'src/database/database.service';
 export class MessageService {
   constructor(private readonly prisma: DatabaseService) {}
   async create(dto: CreateMessageDto) {
-    const message = await this.prisma.message.create({
-      data: {
-        text: dto.text,
-        channel: {
-          connect: { id: dto.channel_id },
-        },
+    const { text, channel_id, keyboards } = dto;
+
+    const messageData = {
+      text,
+      channel: {
+        connect: { id: channel_id },
       },
+    };
+
+    if (keyboards && keyboards.length > 0) {
+      messageData['keyboards'] = {
+        createMany: {
+          data: keyboards.map((keyboard) => {
+            return {
+              type: keyboard.type,
+              buttons: {
+                createMany: {
+                  data: keyboard.buttons.map((button) => {
+                    return {
+                      content: button.content,
+                      type: button.type,
+                    };
+                  }),
+                },
+              },
+            };
+          }),
+        },
+      };
+    }
+
+    const message = await this.prisma.message.create({
+      data: messageData,
       include: {
         keyboard: {
           include: {

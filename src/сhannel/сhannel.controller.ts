@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { СhannelService } from './сhannel.service';
 import { CreateСhannelDto } from './dto/create-сhannel.dto';
@@ -21,8 +22,8 @@ export class СhannelController {
   }
 
   @Get()
-  findAll() {
-    return this.сhannelService.findAll();
+  async findAll(@Query('companyId') companyId: number) {
+    return this.сhannelService.findAllByCompanyId(+companyId);
   }
 
   @Get(':id')
