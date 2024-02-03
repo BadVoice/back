@@ -1,4 +1,12 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { CreateKeyboardDto } from 'src/keyboard/dto/create-keyboard.dto';
 
 export class CreateMessageDto {
   @IsString()
@@ -8,4 +16,9 @@ export class CreateMessageDto {
   @IsNumber()
   @IsNotEmpty()
   channel_id: number;
+
+  @ValidateNested({ each: true })
+  @Type(() => CreateKeyboardDto)
+  @IsOptional()
+  keyboards?: CreateKeyboardDto[];
 }

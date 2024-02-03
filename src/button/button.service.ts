@@ -7,15 +7,16 @@ import { DatabaseService } from 'src/database/database.service';
 export class ButtonService {
   constructor(private readonly prisma: DatabaseService) {}
   async create(dto: CreateButtonDto) {
-    return await this.prisma.button.create({
+    const createdButton = await this.prisma.button.create({
       data: {
-        content: dto.content,
-        type: dto.type,
         keyboard: {
           connect: { id: dto.keyboard_id },
         },
+        content: dto.content,
+        type: dto.type,
       },
     });
+    return createdButton;
   }
 
   async findAll() {

@@ -41,7 +41,7 @@ model Message {
  
   channel Channel @relation(fields: [channel_id], references: [id])
   channel_id Int 
-  keyboard Keyboard?
+  keyboard Keyboard[]
 }
 
 model Keyboard {
@@ -50,7 +50,7 @@ model Keyboard {
 
   buttons Button[]
 
-  message_id Int @unique
+  message_id Int
   message Message  @relation(fields: [message_id], references: [id])
 }
 
