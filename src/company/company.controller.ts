@@ -25,6 +25,14 @@ export class CompanyController {
     return await this.companyService.findAll();
   }
 
+  @Get(':id/channels/:channelId')
+  async findChannel(
+    @Param('id') id: string,
+    @Param('channelId') channelId: string,
+  ) {
+    return await this.companyService.findChannel(+id, +channelId);
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.companyService.findOne(+id);

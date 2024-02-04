@@ -49,6 +49,34 @@ export class CompanyService {
     return company;
   }
 
+  async findChannel(id: number, channelId: number) {
+    const company = await this.prisma.company.findUnique({
+      where: { id },
+      include: {
+        channels: {
+          where: {
+            id: channelId,
+          },
+          include: {
+            messages: {
+              include: {
+                keyboard: {
+                  include: {
+                    buttons: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+    return company;
+  }
+
   async update(id: number, updateCompanyDto: UpdateCompanyDto) {
     //prittier-ignore
     return await this.prisma.company
