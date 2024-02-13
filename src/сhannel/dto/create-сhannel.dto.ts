@@ -1,15 +1,10 @@
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNumber,
-  IsString,
-  MaxLength,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 enum ChannelType {
   Telegram = 'Telegram',
   Vkontakte = 'Vkontakte',
   WhatsApp = 'WhatsApp',
+  SMS = 'SMS',
 }
 
 export class CreateСhannelDto {

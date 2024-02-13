@@ -33,6 +33,7 @@ enum ChannelType {
   Telegram
   Vkontakte
   WhatsApp
+  SMS
 }
 
 model Message {
