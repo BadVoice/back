@@ -12,7 +12,7 @@ import { Prisma } from '@prisma/client';
 export class CompanyService {
   constructor(private readonly prisma: DatabaseService) {}
 
-  async create(dto: CreateCompanyDto) {
+  async createCompany(dto: CreateCompanyDto) {
     //prittier-ignore
     return await this.prisma.company
       .create({
@@ -41,7 +41,7 @@ export class CompanyService {
     });
   }
 
-  async findOne(id: number) {
+  async findCompanyById(id: number) {
     const company = await this.prisma.company.findUnique({ where: { id } });
     if (!company) {
       throw new NotFoundException('Company not found');
@@ -49,7 +49,7 @@ export class CompanyService {
     return company;
   }
 
-  async findChannel(id: number, channelId: number) {
+  async findChannelById(id: number, channelId: number) {
     const company = await this.prisma.company.findUnique({
       where: { id },
       include: {
@@ -77,7 +77,7 @@ export class CompanyService {
     return company;
   }
 
-  async update(id: number, updateCompanyDto: UpdateCompanyDto) {
+  async updateCompanyById(id: number, updateCompanyDto: UpdateCompanyDto) {
     //prittier-ignore
     return await this.prisma.company
       .update({
@@ -94,7 +94,7 @@ export class CompanyService {
       });
   }
 
-  async remove(id: number) {
+  async removeCompanyById(id: number) {
     return await this.prisma.company.delete({ where: { id } }).then((r) => {
       if (!r) throw new NotFoundException('Company not found');
       return r;

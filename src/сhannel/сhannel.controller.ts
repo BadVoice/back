@@ -22,7 +22,7 @@ export class СhannelController {
   }
 
   @Get()
-  async findAll(@Query('companyId') companyId: number) {
+  async findAllByCompanyId(@Query('companyId') companyId: number) {
     return this.сhannelService.findAllByCompanyId(+companyId);
   }
 

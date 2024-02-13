@@ -16,8 +16,8 @@ export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}
 
   @Post()
-  async create(@Body() dto: CreateCompanyDto) {
-    return await this.companyService.create(dto);
+  async createCompany(@Body() dto: CreateCompanyDto) {
+    return await this.companyService.createCompany(dto);
   }
 
   @Get()
@@ -26,25 +26,28 @@ export class CompanyController {
   }
 
   @Get(':id/channels/:channelId')
-  async findChannel(
+  async findChannelById(
     @Param('id') id: string,
     @Param('channelId') channelId: string,
   ) {
-    return await this.companyService.findChannel(+id, +channelId);
+    return await this.companyService.findChannelById(+id, +channelId);
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.companyService.findOne(+id);
+  async findCompanyById(@Param('id') id: string) {
+    return await this.companyService.findCompanyById(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companyService.update(+id, updateCompanyDto);
+  updateCompanyById(
+    @Param('id') id: string,
+    @Body() updateCompanyDto: UpdateCompanyDto,
+  ) {
+    return this.companyService.updateCompanyById(+id, updateCompanyDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companyService.remove(+id);
+  removeCompanyById(@Param('id') id: string) {
+    return this.companyService.removeCompanyById(+id);
   }
 }
